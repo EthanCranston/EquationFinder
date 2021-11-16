@@ -146,54 +146,6 @@ ostream & operator<<(ostream & out, Equation* e){
     return out;
 }
 
-vector<Equation *> Equation::getNumerator() {
-    vector<Equation*> numerator = {};
-    if (_operation == '/'){
-        for (Equation* x : _eq1->getNumerator()){
-            numerator.push_back(x);
-        }
-        for (Equation* x : _eq2->getDenominator()) {
-            numerator.push_back(x);
-        }
-    }
-    else if (_operation == '*') {
-        for (Equation *x : _eq1->getNumerator()) {
-            numerator.push_back(x);
-        }
-        for (Equation *x : _eq2->getNumerator()) {
-            numerator.push_back(x);
-        }
-    }
-    else {
-        numerator.push_back(this);
-    }
-
-    return numerator;
-}
-
-vector<Equation *> Equation::getDenominator() {
-    vector<Equation*> denominator = {};
-    if (_operation == '/'){
-
-        for (Equation* x : _eq1->getDenominator()){
-            denominator.push_back(x);
-        }
-        for(Equation* x : _eq2->getNumerator()){
-            denominator.push_back(x);
-        }
-    }
-    else if (_operation == '*'){
-        for (Equation* x : _eq1->getDenominator()) {
-            denominator.push_back(x);
-        }
-        for (Equation* x : _eq2->getDenominator()){
-            denominator.push_back(x);
-        }
-    }
-
-    return denominator;
-}
-
 void Equation::updateNumerator() {
     if (_operation == '/'){
         for (Equation* x : _eq1->_numerator){

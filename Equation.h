@@ -32,8 +32,6 @@ private:
     vector<Equation*> _denominator;
     void updateNumerator();
     void updateDenominator();
-    vector<Equation*> getNumerator();
-    vector<Equation*> getDenominator();
 
 
 };
