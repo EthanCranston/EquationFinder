@@ -24,9 +24,9 @@ Equation::Equation(Equation *eq1, Equation *eq2, char opp) {
     _operation = opp;
 
     double num1 = eq1->get_value();
-    double num2;
+    double num2 = 0;
     double unit1 = eq1->get_unit();
-    double unit2;
+    double unit2 = 0;
 
 
     if(eq2 != nullptr){
@@ -44,7 +44,7 @@ Equation::Equation(Equation *eq1, Equation *eq2, char opp) {
             _unit = unit1;
             break;
         case '-':
-            _value = num1-num1; //maybe abs?
+            _value = num1-num2; //maybe abs?
             if (unit1 != unit2){
                 throw invalid_argument("different units");
             }
@@ -94,14 +94,13 @@ Equation* Equation::simplify() {
     ///TODO: fix this
     for(Equation* n : _numerator){
         for(Equation* d : _denominator){
-            cout << d << "HERE\t";
             if (n == d){
                 *n = *_oneConstant;
                 *d = *_oneConstant;
             }
         }
     }
-    cout << endl;
+
     //cout << _eq1 << " : " << _eq2 << endl;
 
     if (_eq1 == nullptr) return _eq2;
