@@ -93,9 +93,8 @@ Equation* Equation::simplify() {
     updateDenominator();
     ///TODO: fix this
     for(Equation* n : _numerator){
-
         for(Equation* d : _denominator){
-            cout << d << "\t";
+            cout << d << "HERE\t";
             if (n == d){
                 *n = *_oneConstant;
                 *d = *_oneConstant;

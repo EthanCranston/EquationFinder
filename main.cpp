@@ -13,10 +13,10 @@ bool close_enough(double answer, double guess, double precision = 0.06){
 
 
 int main() {
-    double answer = 4.0;
-    double answerUnits = 2.0/3.0;
-    vector<double> givenValues = {5.0, 3.0, 2.0};
-    vector<double> givenUnits =  {2.0, 2.0, 3.0};
+    double answer = 8.0;
+    double answerUnits = 2.0;
+    vector<double> givenValues = {5.0, 2.0, 6.0};
+    vector<double> givenUnits =  {2.0, 7.0, 14.0};
     int order = 0;
     //initialize map
     map<double, vector<Equation*>> allEquations;
