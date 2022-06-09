@@ -2,22 +2,20 @@
 #include <map>
 #include <vector>
 #include "Equation.h"
-#include "Units.h"
-#include <cmath>
 
 using namespace std;
 
-bool close_enough(double answer, double guess, double precision = 0.005){
+bool close_enough(double answer, double guess, double precision = 0.05){
     return abs(answer-guess) < precision;
 }
 
 
 
 int main() {
-    double answer = 11.174;
+    double answer = 15.8;
     double answerUnits = m/s/s;
-    vector<double> givenValues = {18.5, 46.1, 2.47};
-    vector<double> givenUnits =  {m/s, m/s, s};
+    vector<double> givenValues = {112, 398, 0.5};
+    vector<double> givenUnits =  {m/s, m, unitless};
 
     //initialize map
     map<double, vector<Equation*>> allEquations;
@@ -36,12 +34,12 @@ int main() {
         for(auto it1 = allEquations.begin(); it1 != allEquations.end(); it1++){
             for(auto it2 = it1; it2 != allEquations.end(); it2++){
                 if (it1->second.at(0)->get_unit() == it2->second.at(0)->get_unit()){
-                    Equation* newAddPtr = new Equation(it1->second.at(0), it2->second.at(0), '+');
+                    Equation* newAddPtr = new Equation(it1->second.at(0), it2->second.at(0), add);
                     newEquations.push_back(newAddPtr);
                     //cout << newAddPtr << newAddPtr->get_value() << endl;
                     if (it1 != it2) { //prevents creating equations equal to zero
-                        Equation *newSubPtr1 = new Equation(it1->second.at(0), it2->second.at(0), '-');
-                        Equation *newSubPtr2 = new Equation(it2->second.at(0), it1->second.at(0), '-');
+                        Equation *newSubPtr1 = new Equation(it1->second.at(0), it2->second.at(0), subtract);
+                        Equation *newSubPtr2 = new Equation(it2->second.at(0), it1->second.at(0), subtract);
                         newEquations.push_back(newSubPtr1);
                         newEquations.push_back(newSubPtr2);
                         //cout << newSubPtr1 << newSubPtr1->get_value() << endl;
@@ -50,12 +48,12 @@ int main() {
 
 
                 }
-                Equation* newMulPtr = new Equation(it1->second.at(0), it2->second.at(0), '*');
+                Equation* newMulPtr = new Equation(it1->second.at(0), it2->second.at(0), multiply);
                 newEquations.push_back(newMulPtr);
                 //cout << newMulPtr << newMulPtr->get_value() << endl;
                 if (it1 != it2) { //prevents creating equations equal to one
-                    Equation *newDivPtr1 = new Equation(it1->second.at(0), it2->second.at(0), '/');
-                    Equation *newDivPtr2 = new Equation(it2->second.at(0), it1->second.at(0), '/');
+                    Equation *newDivPtr1 = new Equation(it1->second.at(0), it2->second.at(0), divide);
+                    Equation *newDivPtr2 = new Equation(it2->second.at(0), it1->second.at(0), divide);
                     newEquations.push_back(newDivPtr1);
                     newEquations.push_back(newDivPtr2);
                     //cout << newDivPtr1 << newDivPtr1->get_value() << endl;

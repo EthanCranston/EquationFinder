@@ -6,13 +6,14 @@
 #define EQUATION_FINDER_EQUATION_H
 #include <iostream>
 #include <vector>
+#include "Units.cpp"
 
 using namespace std;
 
 class Equation {
 public:
     Equation(double num, double unit);
-    Equation(Equation *eq1, Equation *eq2, char opp);
+    Equation(Equation *eq1, Equation *eq2, MathOperator opp);
     double get_value();
     int get_order();
     double get_unit();
@@ -21,7 +22,7 @@ public:
 
 
 private:
-    char _operation;
+    MathOperator _operation;
     double _value;
     Equation* _eq1;
     Equation* _eq2;

@@ -12,21 +12,21 @@ Equation::Equation(double num, double unit) {
     _value = num;
     _eq1 = nullptr;
     _eq2 = nullptr;
-    _operation = '\0';
+    _operation = null;
     _unit = unit;
 }
 
 
-Equation::Equation(Equation *eq1, Equation *eq2, char opp) {
+Equation::Equation(Equation *eq1, Equation *eq2, MathOperator opp) {
     _order = eq1->get_order() + eq2->get_order() + 1;
     _eq1 = eq1;
     _eq2 = eq2;
     _operation = opp;
 
     double num1 = eq1->get_value();
-    double num2 = 0;
+    double num2 = '\0';
     double unit1 = eq1->get_unit();
-    double unit2 = 0;
+    double unit2 = '\0';
 
 
     if(eq2 != nullptr){
@@ -36,31 +36,40 @@ Equation::Equation(Equation *eq1, Equation *eq2, char opp) {
 
 
     switch (opp) {
-        case '+':
+        case add:
             _value = num1+num2;
-            if (unit1 != unit2){
-                throw invalid_argument("different units");
-            }
+            if (unit1 != unit2) throw invalid_argument("different units");
             _unit = unit1;
             break;
-        case '-':
-            _value = num1-num2; //maybe abs?
-            if (unit1 != unit2){
-                throw invalid_argument("different units");
-            }
+        case subtract:
+            _value = num1-num2;
+            if (unit1 != unit2) throw invalid_argument("different units");
             _unit = unit1;
             break;
-        case '*':
+        case multiply:
             _value = num1*num2;
             _unit = unit1 * unit2;
             break;
-        case '/':
+        case divide:
             _value = num1/num2;
             _unit = unit1/unit2;
             break;
-        case 's':
-            _value = sqrt(num1); // num2 should be NULL
-            _unit = unit1; //Units here?? how?
+        case squareRoot:
+            if (eq2 != nullptr) throw invalid_argument("Square Root only accepts one argument");
+            _value = sqrt(num1);
+            _unit = sqrt(unit1);
+            break;
+        case cosine:
+            if (eq2 != nullptr) throw invalid_argument("Cosine only accepts one argument");
+            if (eq1->get_unit() != rad) throw invalid_argument("must use radians for cosine");
+            _value = cos(num1);
+            _unit = 1.;
+            break;
+        case sine:
+            if (eq2 != nullptr) throw invalid_argument("Sine only accepts one argument");
+            if (eq1->get_unit() != rad) throw invalid_argument("must use radians for sine");
+            _value = sin(num1);
+            _unit = 1.;
             break;
         default:
             throw logic_error("Operation does not exist");
@@ -107,24 +116,24 @@ Equation* Equation::simplify() {
     if (_eq2 == nullptr) return _eq1;
 
 
-    if (_operation == '/') {
+    if (_operation == divide) {
         if (_eq1 == _eq2) return _oneConstant;
         if (_eq2 == _oneConstant) return _eq1;
     }
 
-    if(_operation == '*'){
+    if(_operation == multiply){
         if (_eq1 == _oneConstant) return _eq2;
         if (_eq2 == _oneConstant) return _eq1;
-        if (_eq1->_operation == '/'){ // Fixes the scenario: 1/2 * (2+5) -> (2+5)/2
+        if (_eq1->_operation == divide){ // Fixes the scenario: 1/2 * (2+5) -> (2+5)/2
             if (_eq1->_eq1 == _oneConstant){
-                _operation = '/';
+                _operation = divide;
                 Equation* temp = _eq2;
                 _eq2 = _eq1->_eq2;
                 _eq1 = temp;
 
             }
             if (_eq2->_eq1 == _oneConstant){
-                _operation = '/';
+                _operation = divide;
                 _eq2 = _eq2->_eq2;
             }
         }
@@ -145,7 +154,7 @@ ostream & operator<<(ostream & out, Equation* e){
 }
 
 void Equation::updateNumerator() {
-    if (_operation == '/'){
+    if (_operation == divide){
         for (Equation* x : _eq1->_numerator){
             _numerator.push_back(x);
         }
@@ -153,7 +162,7 @@ void Equation::updateNumerator() {
             _numerator.push_back(x);
         }
     }
-    else if (_operation == '*') {
+    else if (_operation == multiply) {
         for (Equation *x : _eq1->_numerator) {
             _numerator.push_back(x);
         }
@@ -168,7 +177,7 @@ void Equation::updateNumerator() {
 
 void Equation::updateDenominator() {
     vector<Equation*> denominator = {};
-    if (_operation == '/'){
+    if (_operation == divide){
         for (Equation* x : _eq1->_denominator){
             _denominator.push_back(x);
         }
@@ -176,7 +185,7 @@ void Equation::updateDenominator() {
             _denominator.push_back(x);
         }
     }
-    else if (_operation == '*'){
+    else if (_operation == multiply){
         for (Equation* x : _eq1->_denominator){
             _denominator.push_back(x);
         }
