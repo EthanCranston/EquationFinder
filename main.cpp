@@ -25,6 +25,7 @@ int main() {
         allEquations[newValPtr->get_value()].push_back(newValPtr);
     }
 
+
     vector<Equation*> solutions;
     vector<Equation*> newEquations;
     bool found = false;
@@ -36,7 +37,7 @@ int main() {
                 if (it1->second.at(0)->get_unit() == it2->second.at(0)->get_unit()){
                     Equation* newAddPtr = new Equation(it1->second.at(0), it2->second.at(0), add);
                     newEquations.push_back(newAddPtr);
-                    //cout << newAddPtr << newAddPtr->get_value() << endl;
+                    //cout << "add: " << newAddPtr << newAddPtr->get_value() << endl;
                     if (it1 != it2) { //prevents creating equations equal to zero
                         Equation *newSubPtr1 = new Equation(it1->second.at(0), it2->second.at(0), subtract);
                         Equation *newSubPtr2 = new Equation(it2->second.at(0), it1->second.at(0), subtract);
@@ -59,12 +60,7 @@ int main() {
                     //cout << newDivPtr1 << newDivPtr1->get_value() << endl;
                     //cout << newDivPtr2 << newDivPtr2->get_value() << endl;
                 }
-
-
-
-
             }
-
         }
 
         for(Equation* x:newEquations) {

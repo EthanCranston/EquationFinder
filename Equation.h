@@ -17,6 +17,7 @@ public:
     double get_value();
     int get_order();
     double get_unit();
+    char get_operation_char();
     Equation* simplify();
     friend ostream & operator<<(ostream & out, Equation* e);
 
@@ -36,6 +37,8 @@ private:
 
 
 };
+
+
 
 ostream & operator<<(ostream & out, Equation* e);
 

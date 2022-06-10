@@ -89,6 +89,29 @@ double Equation::get_unit() {
     return _unit;
 }
 
+char Equation::get_operation_char() {
+    switch (_operation){
+        case add:
+            return '+';
+        case subtract:
+            return '-';
+        case multiply:
+            return '*';
+        case divide:
+            return '/';
+        case squareRoot:
+            return '?';
+        case sine:
+            return '?';
+        case cosine:
+            return '?';
+        case null:
+            return '0';
+        default:
+            throw std::invalid_argument("Operation does not exist");
+    }
+}
+
 Equation* Equation::simplify() {
     if (_order == 0) return this;
 
@@ -148,7 +171,7 @@ ostream & operator<<(ostream & out, Equation* e){
     if (e->_order == 0) {
         out << e->_value;
     }else{
-        out << "(" << e->_eq1 << e->_operation << e->_eq2 << ")";
+        out << "(" << e->_eq1 << e->get_operation_char() << e->_eq2 << ")";
     }
     return out;
 }
